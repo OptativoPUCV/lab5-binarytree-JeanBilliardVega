@@ -194,9 +194,10 @@ Pair * firstTreeMap(TreeMap * tree) {
 }
 
 Pair * nextTreeMap(TreeMap * tree) {
-    TreeNode *current = tree->current;
-    if (tree == NULL || current == NULL) 
+    if (tree == NULL || tree->current == NULL) // Verificar si tree o tree->current es NULL
         return NULL;
+
+    TreeNode *current = tree->current;
 
     if (current->right != NULL) { // Si hay un subárbol derecho, buscar el nodo más a la izquierda
         current = current->right;
@@ -211,7 +212,9 @@ Pair * nextTreeMap(TreeMap * tree) {
             current = parent;
             parent = parent->parent;
         }
+        tree->current = parent; // Actualizar tree->current con el próximo nodo mayor
         return (parent != NULL) ? parent->pair : NULL; // Retornar el par del próximo nodo mayor o NULL si no hay más nodos
     }
 }
+
 
