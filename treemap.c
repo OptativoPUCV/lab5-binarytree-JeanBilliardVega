@@ -183,9 +183,35 @@ Pair * upperBound(TreeMap * tree, void* key)
 }
 
 Pair * firstTreeMap(TreeMap * tree) {
-    return NULL;
+    if (tree == NULL || tree->root == NULL)
+        return NULL;
+
+    TreeNode *current = tree->root;
+    while (current->left != NULL) {
+        current = current->left;
+    }
+    return current->pair;
 }
 
 Pair * nextTreeMap(TreeMap * tree) {
-    return NULL;
+    TreeNode *current = tree->current;
+    if (tree == NULL || current == NULL) 
+        return NULL;
+
+    if (current->right != NULL) { // Si hay un subárbol derecho, buscar el nodo más a la izquierda
+        current = current->right;
+        while (current->left != NULL) {
+            current = current->left;
+        }
+        tree->current = current;
+        return current->pair;
+    } else { // Si no hay subárbol derecho, retroceder hasta el primer ancestro que sea mayor
+        TreeNode *parent = current->parent;
+        while (parent != NULL && current == parent->right) {
+            current = parent;
+            parent = parent->parent;
+        }
+        return (parent != NULL) ? parent->pair : NULL; // Retornar el par del próximo nodo mayor o NULL si no hay más nodos
+    }
 }
+
